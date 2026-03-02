@@ -1,0 +1,213 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/dataverse-table/2021-09-01",
+  "description": "Dataverse table schema for the Home-HITH admit data extracted from paired PDF/Word documents.",
+  "table": {
+    "logicalName": "hith_admitdata",
+    "displayName": "Admit Data",
+    "pluralDisplayName": "Admit Data",
+    "description": "Stores structured patient admit data extracted from paired SharePoint documents by the AI model pipeline.",
+    "primaryKey": "hith_admitdataid",
+    "alternateKeys": [
+      {
+        "keyName": "hith_patientid_altkey",
+        "columns": ["hith_patientid"]
+      }
+    ],
+    "columns": [
+      {
+        "logicalName": "hith_admitdataid",
+        "displayName": "Admit Data ID",
+        "type": "UniqueIdentifier",
+        "isPrimaryKey": true,
+        "isRequired": true
+      },
+      {
+        "logicalName": "hith_patientid",
+        "displayName": "Patient ID",
+        "type": "String",
+        "maxLength": 100,
+        "isRequired": true,
+        "description": "Unique patient identifier derived from document filename"
+      },
+      {
+        "logicalName": "hith_patientfirstname",
+        "displayName": "First Name",
+        "type": "String",
+        "maxLength": 100
+      },
+      {
+        "logicalName": "hith_patientlastname",
+        "displayName": "Last Name",
+        "type": "String",
+        "maxLength": 100
+      },
+      {
+        "logicalName": "hith_dateofbirth",
+        "displayName": "Date of Birth",
+        "type": "DateTime",
+        "dateTimeFormat": "DateOnly"
+      },
+      {
+        "logicalName": "hith_gender",
+        "displayName": "Gender",
+        "type": "OptionSet",
+        "options": [
+          { "value": 1, "label": "Male" },
+          { "value": 2, "label": "Female" },
+          { "value": 3, "label": "Other" },
+          { "value": 4, "label": "Unknown" }
+        ]
+      },
+      {
+        "logicalName": "hith_address",
+        "displayName": "Address",
+        "type": "Memo",
+        "maxLength": 500
+      },
+      {
+        "logicalName": "hith_phonenumber",
+        "displayName": "Phone Number",
+        "type": "String",
+        "maxLength": 50
+      },
+      {
+        "logicalName": "hith_insuranceid",
+        "displayName": "Insurance ID",
+        "type": "String",
+        "maxLength": 100
+      },
+      {
+        "logicalName": "hith_insurancename",
+        "displayName": "Insurance Name",
+        "type": "String",
+        "maxLength": 200
+      },
+      {
+        "logicalName": "hith_primarydiagnosis",
+        "displayName": "Primary Diagnosis",
+        "type": "Memo",
+        "maxLength": 1000
+      },
+      {
+        "logicalName": "hith_secondarydiagnoses",
+        "displayName": "Secondary Diagnoses (JSON)",
+        "type": "Memo",
+        "maxLength": 4000,
+        "description": "JSON array of secondary diagnosis strings"
+      },
+      {
+        "logicalName": "hith_physicianname",
+        "displayName": "Physician Name",
+        "type": "String",
+        "maxLength": 200
+      },
+      {
+        "logicalName": "hith_physiciannpi",
+        "displayName": "Physician NPI",
+        "type": "String",
+        "maxLength": 20
+      },
+      {
+        "logicalName": "hith_referringphysician",
+        "displayName": "Referring Physician",
+        "type": "String",
+        "maxLength": 200
+      },
+      {
+        "logicalName": "hith_admitdate",
+        "displayName": "Admit Date",
+        "type": "DateTime",
+        "dateTimeFormat": "DateOnly"
+      },
+      {
+        "logicalName": "hith_dischargedate",
+        "displayName": "Discharge Date",
+        "type": "DateTime",
+        "dateTimeFormat": "DateOnly"
+      },
+      {
+        "logicalName": "hith_functionallimitations",
+        "displayName": "Functional Limitations",
+        "type": "Memo",
+        "maxLength": 2000
+      },
+      {
+        "logicalName": "hith_mentalstatus",
+        "displayName": "Mental Status",
+        "type": "Memo",
+        "maxLength": 1000
+      },
+      {
+        "logicalName": "hith_prognosis",
+        "displayName": "Prognosis",
+        "type": "Memo",
+        "maxLength": 1000
+      },
+      {
+        "logicalName": "hith_skilledservices",
+        "displayName": "Skilled Services (JSON)",
+        "type": "Memo",
+        "maxLength": 2000,
+        "description": "JSON array of skilled service strings (e.g. SN, PT, OT, ST)"
+      },
+      {
+        "logicalName": "hith_medications",
+        "displayName": "Medications (JSON)",
+        "type": "Memo",
+        "maxLength": 4000,
+        "description": "JSON array of medication strings"
+      },
+      {
+        "logicalName": "hith_allergies",
+        "displayName": "Allergies (JSON)",
+        "type": "Memo",
+        "maxLength": 2000,
+        "description": "JSON array of allergy strings"
+      },
+      {
+        "logicalName": "hith_sourcefiles",
+        "displayName": "Source Files (JSON)",
+        "type": "Memo",
+        "maxLength": 2000,
+        "description": "JSON array of original SharePoint filenames used to populate this record"
+      },
+      {
+        "logicalName": "hith_confidencescore",
+        "displayName": "AI Confidence Score",
+        "type": "Decimal",
+        "precision": 4,
+        "minValue": 0,
+        "maxValue": 1,
+        "description": "Average confidence score returned by the AI model (0.0 – 1.0)"
+      },
+      {
+        "logicalName": "hith_processedon",
+        "displayName": "Processed On",
+        "type": "DateTime",
+        "dateTimeFormat": "DateAndTime",
+        "description": "Timestamp when the record was last updated by the pipeline"
+      },
+      {
+        "logicalName": "hith_admittemplatepopulated",
+        "displayName": "Admit Template Populated",
+        "type": "Boolean",
+        "trueLabel": "Yes",
+        "falseLabel": "No",
+        "defaultValue": false,
+        "description": "Whether the Admit Template has been generated for this patient"
+      }
+    ],
+    "views": [
+      {
+        "name": "Active Admit Records",
+        "type": "Public",
+        "fetchXml": "<fetch><entity name=\"hith_admitdata\"><attribute name=\"hith_patientid\"/><attribute name=\"hith_patientfirstname\"/><attribute name=\"hith_patientlastname\"/><attribute name=\"hith_admitdate\"/><attribute name=\"hith_primarydiagnosis\"/><attribute name=\"hith_confidencescore\"/><attribute name=\"hith_admittemplatepopulated\"/><order attribute=\"hith_admitdate\" descending=\"true\"/></entity></fetch>"
+      },
+      {
+        "name": "Pending Admit Templates",
+        "type": "Public",
+        "fetchXml": "<fetch><entity name=\"hith_admitdata\"><attribute name=\"hith_patientid\"/><attribute name=\"hith_patientfirstname\"/><attribute name=\"hith_patientlastname\"/><attribute name=\"hith_admitdate\"/><filter><condition attribute=\"hith_admittemplatepopulated\" operator=\"eq\" value=\"false\"/></filter></entity></fetch>"
+      }
+    ]
+  }
+}

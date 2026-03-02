@@ -1,0 +1,122 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/power-automate/flow/2022-06-01",
+  "name": "HITH – Populate Admit Template",
+  "description": "Reads an AdmitRecord from Dataverse and populates the Word-based Admit Template, then saves the completed document back to SharePoint.",
+  "trigger": {
+    "type": "When_a_row_is_added_or_modified",
+    "connector": "commondataservice",
+    "inputs": {
+      "entityName": "hith_admitdatas",
+      "filterExpression": "hith_admittemplatepopulated eq false"
+    }
+  },
+  "parameters": {
+    "sharePointSiteUrl": {
+      "type": "String",
+      "displayName": "SharePoint Site URL"
+    },
+    "templateLibrary": {
+      "type": "String",
+      "displayName": "Template Document Library",
+      "defaultValue": "Admit Templates"
+    },
+    "templateFileName": {
+      "type": "String",
+      "displayName": "Admit Template Filename",
+      "defaultValue": "HITH_Admit_Template.docx"
+    },
+    "outputLibrary": {
+      "type": "String",
+      "displayName": "Output Document Library",
+      "defaultValue": "Completed Admit Templates"
+    }
+  },
+  "actions": [
+    {
+      "id": "Get_admit_record",
+      "type": "Get_a_row_by_ID",
+      "connector": "commondataservice",
+      "inputs": {
+        "entityName": "hith_admitdatas",
+        "rowId": "@triggerOutputs()?['body/hith_admitdataid']"
+      },
+      "runAfter": {}
+    },
+    {
+      "id": "Get_template_file",
+      "type": "Get_file_content",
+      "connector": "sharepointonline",
+      "inputs": {
+        "siteAddress": "@parameters('sharePointSiteUrl')",
+        "fileIdentifier": "@{parameters('templateLibrary')}/@{parameters('templateFileName')}"
+      },
+      "runAfter": {
+        "Get_admit_record": ["Succeeded"]
+      }
+    },
+    {
+      "id": "Populate_Word_template",
+      "type": "Populate_a_Microsoft_Word_template",
+      "connector": "wordonlinebusiness",
+      "description": "Replace all merge fields in the template with values from the Dataverse record",
+      "inputs": {
+        "location": "@parameters('sharePointSiteUrl')",
+        "library": "@parameters('templateLibrary')",
+        "file": "@parameters('templateFileName')",
+        "dynamicContent": {
+          "PatientID": "@{body('Get_admit_record')?['hith_patientid']}",
+          "PatientFirstName": "@{body('Get_admit_record')?['hith_patientfirstname']}",
+          "PatientLastName": "@{body('Get_admit_record')?['hith_patientlastname']}",
+          "DateOfBirth": "@{body('Get_admit_record')?['hith_dateofbirth']}",
+          "Gender": "@{body('Get_admit_record')?['hith_gender']}",
+          "Address": "@{body('Get_admit_record')?['hith_address']}",
+          "PhoneNumber": "@{body('Get_admit_record')?['hith_phonenumber']}",
+          "InsuranceID": "@{body('Get_admit_record')?['hith_insuranceid']}",
+          "InsuranceName": "@{body('Get_admit_record')?['hith_insurancename']}",
+          "PrimaryDiagnosis": "@{body('Get_admit_record')?['hith_primarydiagnosis']}",
+          "PhysicianName": "@{body('Get_admit_record')?['hith_physicianname']}",
+          "PhysicianNPI": "@{body('Get_admit_record')?['hith_physiciannpi']}",
+          "ReferringPhysician": "@{body('Get_admit_record')?['hith_referringphysician']}",
+          "AdmitDate": "@{body('Get_admit_record')?['hith_admitdate']}",
+          "DischargeDate": "@{body('Get_admit_record')?['hith_dischargedate']}",
+          "FunctionalLimitations": "@{body('Get_admit_record')?['hith_functionallimitations']}",
+          "MentalStatus": "@{body('Get_admit_record')?['hith_mentalstatus']}",
+          "Prognosis": "@{body('Get_admit_record')?['hith_prognosis']}"
+        }
+      },
+      "runAfter": {
+        "Get_template_file": ["Succeeded"]
+      }
+    },
+    {
+      "id": "Save_populated_template",
+      "type": "Create_file",
+      "connector": "sharepointonline",
+      "inputs": {
+        "siteAddress": "@parameters('sharePointSiteUrl')",
+        "folderPath": "@parameters('outputLibrary')",
+        "fileName": "HITH_Admit_@{body('Get_admit_record')?['hith_patientid']}_@{formatDateTime(utcNow(), 'yyyyMMdd')}.docx",
+        "fileContent": "@body('Populate_Word_template')"
+      },
+      "runAfter": {
+        "Populate_Word_template": ["Succeeded"]
+      }
+    },
+    {
+      "id": "Mark_template_populated",
+      "type": "Update_a_row",
+      "connector": "commondataservice",
+      "inputs": {
+        "entityName": "hith_admitdatas",
+        "rowId": "@triggerOutputs()?['body/hith_admitdataid']",
+        "item": {
+          "hith_admittemplatepopulated": true,
+          "hith_processedon": "@utcNow()"
+        }
+      },
+      "runAfter": {
+        "Save_populated_template": ["Succeeded"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/power-automate/flow/2022-06-01",
+  "name": "HITH – Process Admit Documents from SharePoint",
+  "description": "Triggers when a new file is added to the SharePoint Admit Documents folder, detects document pairs, invokes the AI model pipeline via an Azure Function, and saves results to Dataverse.",
+  "trigger": {
+    "type": "When_a_file_is_created_(properties_only)",
+    "connector": "sharepointonline",
+    "inputs": {
+      "siteAddress": "@parameters('sharePointSiteUrl')",
+      "libraryName": "Admit Documents"
+    }
+  },
+  "parameters": {
+    "sharePointSiteUrl": {
+      "type": "String",
+      "displayName": "SharePoint Site URL",
+      "description": "Root URL of the SharePoint site containing the Admit Documents library"
+    },
+    "processorFunctionUrl": {
+      "type": "String",
+      "displayName": "Document Processor Azure Function URL",
+      "description": "HTTPS endpoint of the Azure Function that hosts document_processor.py"
+    },
+    "dataverseEnvironmentUrl": {
+      "type": "String",
+      "displayName": "Dataverse Environment URL",
+      "description": "e.g. https://orgXXXXXXXX.crm.dynamics.com"
+    }
+  },
+  "actions": [
+    {
+      "id": "Get_file_metadata",
+      "type": "Get_file_metadata",
+      "connector": "sharepointonline",
+      "inputs": {
+        "siteAddress": "@parameters('sharePointSiteUrl')",
+        "fileId": "@triggerOutputs()?['body/ID']"
+      },
+      "runAfter": {}
+    },
+    {
+      "id": "Extract_patient_id",
+      "type": "Compose",
+      "inputs": {
+        "patientId": "@{first(split(outputs('Get_file_metadata')?['body/Name'], '_'))}",
+        "fileName": "@{outputs('Get_file_metadata')?['body/Name']}"
+      },
+      "runAfter": {
+        "Get_file_metadata": ["Succeeded"]
+      }
+    },
+    {
+      "id": "Check_for_document_pair",
+      "type": "Send_an_HTTP_request_to_SharePoint",
+      "connector": "sharepointonline",
+      "description": "List files in the folder that share the same patient ID prefix",
+      "inputs": {
+        "siteAddress": "@parameters('sharePointSiteUrl')",
+        "method": "GET",
+        "uri": "_api/web/lists/GetByTitle('Admit Documents')/items?$filter=startswith(FileLeafRef,'@{outputs('Extract_patient_id')?['patientId']}_')&$select=FileLeafRef,UniqueId"
+      },
+      "runAfter": {
+        "Extract_patient_id": ["Succeeded"]
+      }
+    },
+    {
+      "id": "Condition_pair_found",
+      "type": "Condition",
+      "description": "Only proceed when both documents of the pair are present",
+      "expression": {
+        "and": [
+          {
+            "greaterOrEquals": [
+              "@length(body('Check_for_document_pair')?['d/results'])",
+              2
+            ]
+          }
+        ]
+      },
+      "runAfter": {
+        "Check_for_document_pair": ["Succeeded"]
+      },
+      "actions": {
+        "true": [
+          {
+            "id": "Invoke_Document_Processor",
+            "type": "HTTP",
+            "description": "Call the Azure Function that runs document_processor.py for this patient",
+            "inputs": {
+              "method": "POST",
+              "uri": "@parameters('processorFunctionUrl')",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "patientId": "@{outputs('Extract_patient_id')?['patientId']}"
+              }
+            },
+            "runAfter": {}
+          },
+          {
+            "id": "Check_processor_result",
+            "type": "Condition",
+            "expression": {
+              "equals": [
+                "@outputs('Invoke_Document_Processor')?['statusCode']",
+                200
+              ]
+            },
+            "runAfter": {
+              "Invoke_Document_Processor": ["Succeeded"]
+            },
+            "actions": {
+              "true": [
+                {
+                  "id": "Log_success",
+                  "type": "Compose",
+                  "inputs": "Successfully processed admit documents for patient @{outputs('Extract_patient_id')?['patientId']}",
+                  "runAfter": {}
+                }
+              ],
+              "false": [
+                {
+                  "id": "Send_failure_email",
+                  "type": "Send_an_email_(V2)",
+                  "connector": "office365",
+                  "inputs": {
+                    "to": "@parameters('notificationEmail')",
+                    "subject": "HITH – Document Processing Failed for Patient @{outputs('Extract_patient_id')?['patientId']}",
+                    "body": "<p>The admit document processing pipeline failed for patient <strong>@{outputs('Extract_patient_id')?['patientId']}</strong>.</p><p>File: @{outputs('Extract_patient_id')?['fileName']}</p><p>Please check the Azure Function logs for details.</p>"
+                  },
+                  "runAfter": {}
+                }
+              ]
+            }
+          }
+        ],
+        "false": [
+          {
+            "id": "Log_waiting_for_pair",
+            "type": "Compose",
+            "inputs": "Document pair not yet complete for patient @{outputs('Extract_patient_id')?['patientId']} – waiting for paired file",
+            "runAfter": {}
+          }
+        ]
+      }
+    }
+  ]
+}
