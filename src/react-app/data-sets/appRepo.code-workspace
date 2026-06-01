@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../gitRepos/Aus_Medical_Workforce"
+		},
+		{
+			"path": "../gitRepos/dr-who-aus-national-set"
+		}
+	],
+	"settings": {
+		"chat.tools.terminal.autoApprove": {
+			"/^Get-WebSite \\| Select-Object Name, State, PhysicalPath \\| Format-Table -AutoSize$/": {
+				"approve": true,
+				"matchCommandLine": true
+			}
+		}
+	}
+}

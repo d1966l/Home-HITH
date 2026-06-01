@@ -1,0 +1,17 @@
+{
+  "Referrer": {
+    "refName": "string",
+    "refSurname": "string",
+    "refCallback": "string"
+  },
+  "Patient": {
+    "ptName": "string",
+    "ptSurname": "string",
+    "ptMRN": "string",
+    "ptDOB": "date"
+  },
+  "Clinical": {
+    "dxReferral": "string",
+    "clinHistory": "string"
+  }
+}

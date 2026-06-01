@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../extDataSets"
+		},
+		{
+			"path": "../Home-HITH"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

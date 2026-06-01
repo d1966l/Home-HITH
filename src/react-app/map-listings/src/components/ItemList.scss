@@ -1,0 +1,124 @@
+@use '../styles/tokens' as *;
+
+// Status palette
+$status: (
+  online:  $neon-green,
+  idle:    $neon-yellow,
+  visible: $neon-purple,
+);
+
+.item-list {
+  list-style: none;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.item-card {
+  @include glass(0.06);
+  border-radius: $radius-card;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+
+  // Left accent stripe, coloured by status
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: $radius-card 0 0 $radius-card;
+    transition: opacity 0.2s;
+  }
+
+  @each $s, $c in $status {
+    &--#{$s}::before { background: $c; box-shadow: 0 0 8px $c; }
+  }
+
+  &:hover {
+    transform: translateX(3px);
+    border-color: rgba($neon-purple, 0.45);
+    @include neon-glow($neon-purple, 6px);
+  }
+
+  &--active {
+    border-color: $neon-green !important;
+    background: rgba($neon-green, 0.07) !important;
+    @include neon-glow($neon-green, 8px);
+    transform: translateX(4px);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  &__name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: $text-primary;
+  }
+
+  &__badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.55rem;
+    border-radius: $radius-chip;
+    flex-shrink: 0;
+
+    @each $s, $c in $status {
+      &--#{$s} {
+        color: $c;
+        background: rgba($c, 0.12);
+        border: 1px solid rgba($c, 0.35);
+        text-shadow: 0 0 6px $c;
+      }
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    margin-bottom: 0.45rem;
+  }
+
+  &__type {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: $text-muted;
+  }
+
+  &__ip {
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    color: $text-code;
+    background: rgba($neon-green, 0.08);
+    padding: 0.05rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid rgba($neon-green, 0.2);
+  }
+
+  &__signal {
+    font-family: $font-mono;
+    font-size: 0.65rem;
+    color: $neon-yellow;
+  }
+
+  &__desc {
+    font-size: 0.72rem;
+    color: $text-muted;
+    line-height: 1.5;
+  }
+}

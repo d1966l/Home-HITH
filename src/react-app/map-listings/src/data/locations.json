@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "AP-Vortex-Main",
+    "type": "WiFi AP",
+    "status": "online",
+    "signal": -42,
+    "band": "5 GHz",
+    "address": "192.168.1.1",
+    "description": "Primary gateway access point — living room.",
+    "lat": -33.8688,
+    "lng": 151.2093
+  },
+  {
+    "id": 2,
+    "name": "AP-Garage-Node",
+    "type": "WiFi AP",
+    "status": "online",
+    "signal": -61,
+    "band": "2.4 GHz",
+    "address": "192.168.1.4",
+    "description": "Mesh node in garage. Extended coverage zone.",
+    "lat": -33.8695,
+    "lng": 151.2101
+  },
+  {
+    "id": 3,
+    "name": "MSSQLSERVER02",
+    "type": "Server",
+    "status": "online",
+    "signal": null,
+    "band": null,
+    "address": "192.168.1.20",
+    "description": "Local SQL Server. Medical Workforce + IntranetDB. Windows Auth.",
+    "lat": -33.8680,
+    "lng": 151.2085
+  },
+  {
+    "id": 4,
+    "name": "DEV-RIG",
+    "type": "Workstation",
+    "status": "online",
+    "signal": null,
+    "band": null,
+    "address": "192.168.1.10",
+    "description": "Primary dev machine running IIS, VS Code, and local intranet.",
+    "lat": -33.8682,
+    "lng": 151.2090
+  },
+  {
+    "id": 5,
+    "name": "NAS-BlackVault",
+    "type": "NAS",
+    "status": "idle",
+    "signal": null,
+    "band": null,
+    "address": "192.168.1.30",
+    "description": "Network-attached storage. Backup target for appRepo and IIS content.",
+    "lat": -33.8691,
+    "lng": 151.2097
+  },
+  {
+    "id": 6,
+    "name": "AP-Neighbour-01",
+    "type": "External AP",
+    "status": "visible",
+    "signal": -78,
+    "band": "2.4 GHz",
+    "address": null,
+    "description": "Nearby external access point. Not on local network.",
+    "lat": -33.8700,
+    "lng": 151.2110
+  }
+]

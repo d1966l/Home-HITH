@@ -1,0 +1,105 @@
+@use '../styles/tokens' as *;
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &-header {
+    @include glass(0.08);
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid rgba($neon-purple, 0.2);
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+
+    // Animated top accent line
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, $neon-purple, $neon-green, $neon-pink, $neon-blue);
+      background-size: 300% 100%;
+      animation: hue-slide 4s linear infinite;
+    }
+
+    &__eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: $text-muted;
+    }
+
+    &__title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      background: linear-gradient(135deg, $neon-green 0%, $neon-blue 60%, $neon-purple 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-right: auto;
+    }
+
+    &__filters {
+      display: flex;
+      gap: 0.4rem;
+    }
+  }
+
+  &-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  &-list {
+    width: 340px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    border-right: 1px solid $border;
+    background: $bg-panel;
+  }
+
+  &-map {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.filter-chip {
+  font-family: $font-ui;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.85rem;
+  border-radius: $radius-chip;
+  border: 1px solid rgba($neon-purple, 0.35);
+  background: transparent;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $neon-purple;
+    color: $neon-purple;
+    @include neon-glow($neon-purple, 4px);
+  }
+
+  &--active {
+    background: rgba($neon-purple, 0.18);
+    border-color: $neon-purple;
+    color: $neon-purple;
+    @include neon-glow($neon-purple, 6px);
+  }
+}
+
+@keyframes hue-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
