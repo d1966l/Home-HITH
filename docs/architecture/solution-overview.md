@@ -21,6 +21,11 @@ Home-HITH automates admit-document processing using:
 
 ---
 
+## Deployment Documentation
+
+- [Deployment Guide](../deployment/deployment-guide.md)
+- [Environment Variables](../deployment/environment-variables.md)
+
 ## Business Objective
 
 Home-HITH streamlines the intake and processing of hospital-at-home (HITH) admission documents by automatically extracting patient information from paired PDF and Word documents stored in SharePoint, transforming the data into structured records within Dataverse, and generating completed admit templates for clinical workflows.
