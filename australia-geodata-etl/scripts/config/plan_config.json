@@ -1,0 +1,77 @@
+{
+  "source_dirs": [
+    "NB Council/incoming",
+    "NB Council/forms",
+    "forms-lec",
+    "Class 1 & 2 Practice notes"
+  ],
+  "output_dir": "repo/outputs",
+  "keywords": {
+    "compliance_pathway": [
+      "retrospective development application",
+      "retrospective DA",
+      "made compliant",
+      "rectifiable",
+      "re-inspection",
+      "demolition order"
+    ],
+    "bushfire_bal": [
+      "bush fire prone",
+      "BAL",
+      "Planning for Bush Fire Protection",
+      "PBP 2019",
+      "AS 3959",
+      "non-habitable outbuilding",
+      "materials schedule"
+    ],
+    "stormwater": [
+      "stormwater",
+      "drainage",
+      "lawful point of discharge",
+      "hydraulic",
+      "downpipe",
+      "gutter",
+      "OSD",
+      "Water Management for Development Policy"
+    ],
+    "setbacks_structure": [
+      "setback",
+      "boundary",
+      "surveyor",
+      "structural engineer",
+      "arborist",
+      "footing",
+      "slab",
+      "framing"
+    ],
+    "court_forms": [
+      "Form B",
+      "Application Class 1, 2, 3",
+      "Land and Environment Court",
+      "Class 1",
+      "s 8.7",
+      "s 8.9",
+      "determination",
+      "development application",
+      "modification application"
+    ],
+    "practice_notes": [
+      "Practice Note",
+      "Class 1 Development Appeals",
+      "Schedule A",
+      "annexure",
+      "plans",
+      "evidence"
+    ]
+  },
+  "extensions": [
+    ".pdf",
+    ".docx",
+    ".doc",
+    ".txt",
+    ".md",
+    ".csv",
+    ".json",
+    ".eml"
+  ]
+}

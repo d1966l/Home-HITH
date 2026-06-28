@@ -1,0 +1,107 @@
+@use '../styles/tokens' as *;
+
+.map-view {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  &__leaflet {
+    width: 100%;
+    height: 100%;
+
+    // Dark map filter
+    filter: brightness(0.85) saturate(0.7) hue-rotate(190deg);
+    transition: filter 0.3s;
+
+    &:hover {
+      filter: brightness(0.9) saturate(0.85) hue-rotate(190deg);
+    }
+  }
+
+  // Override Leaflet tile layer to stay dark
+  .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.75) contrast(1.1);
+  }
+
+  // Zoom controls
+  .leaflet-control-zoom {
+    border: 1px solid rgba($neon-purple, 0.3) !important;
+    background: $bg-panel !important;
+    box-shadow: none !important;
+
+    a {
+      background: $bg-panel !important;
+      color: $neon-purple !important;
+      border-bottom: 1px solid rgba($neon-purple, 0.2) !important;
+      transition: background 0.15s, color 0.15s;
+
+      &:hover {
+        background: rgba($neon-purple, 0.15) !important;
+        color: $neon-green !important;
+      }
+    }
+  }
+
+  // Attribution
+  .leaflet-control-attribution {
+    background: rgba($bg-deep, 0.75) !important;
+    color: $text-muted !important;
+    font-size: 0.6rem;
+    backdrop-filter: blur(6px);
+
+    a { color: $neon-purple !important; }
+  }
+
+  // Popup
+  .leaflet-popup-content-wrapper {
+    background: $bg-panel !important;
+    border: 1px solid rgba($neon-purple, 0.35) !important;
+    border-radius: $radius-card !important;
+    box-shadow: 0 0 16px rgba($neon-purple, 0.25) !important;
+    color: $text-primary !important;
+    padding: 0 !important;
+  }
+
+  .leaflet-popup-tip {
+    background: $bg-panel !important;
+  }
+
+  .leaflet-popup-close-button {
+    color: $text-muted !important;
+    &:hover { color: $neon-pink !important; }
+  }
+}
+
+.map-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  min-width: 180px;
+
+  strong {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $neon-green;
+  }
+
+  span {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $text-muted;
+  }
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    color: $text-code;
+  }
+
+  p {
+    font-size: 0.72rem;
+    color: $text-muted;
+    line-height: 1.45;
+    margin-top: 0.25rem;
+  }
+}

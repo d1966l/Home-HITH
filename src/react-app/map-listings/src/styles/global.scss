@@ -1,0 +1,40 @@
+@use 'tokens' as *;
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  font-family: $font-ui;
+  background: $bg-deep;
+  color: $text-primary;
+  overflow: hidden;
+}
+
+// Animated grid background
+body {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba($neon-purple, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($neon-purple, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: $bg-deep; }
+::-webkit-scrollbar-thumb  {
+  background: $neon-purple;
+  border-radius: 3px;
+  @include neon-glow($neon-purple, 4px);
+}

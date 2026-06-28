@@ -1,0 +1,83 @@
+{
+  "site": {
+    "address": "40 Frenchs Forest Road East, NSW, 2086",
+    "lga_name": "Northern Beaches",
+    "council_name": "Northern Beaches Council / NB Council",
+    "lat": -33.7268,
+    "lon": 151.2545,
+    "buffer_metres": 250,
+    "abs_region_type": "LGA",
+    "abs_region_code": "15990"
+  },
+  "http": {
+    "user_agent": "Aus-Land-Data-ETL/1.0 (+https://github.com)",
+    "timeout_seconds": 60,
+    "retries": 3,
+    "retry_backoff_seconds": 2
+  },
+  "sources": {
+    "nsw_planning_da": {
+      "enabled": true,
+      "description": "NSW Planning Portal DA Tracking (ArcGIS REST feature layer, keyless). Filtered by LGA + lodgement date.",
+      "layer_url": "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/DA_Tracking/MapServer/0",
+      "lga_field": "LGA_NAME",
+      "date_field": "LODGEMENT_DATE",
+      "lodged_from": "2019-01-01",
+      "lodged_to": "2026-06-20",
+      "page_size": 1000,
+      "max_records": 5000,
+      "out_fields": "*"
+    },
+    "nsw_zoning": {
+      "enabled": true,
+      "description": "NSW ePlanning Land Zoning layer (ArcGIS REST MapServer query at the site point).",
+      "layer_url": "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Primary_Planning_Layers/MapServer/2",
+      "out_fields": "*"
+    },
+    "nsw_hazards": {
+      "enabled": true,
+      "description": "Bushfire-prone land and flood planning ArcGIS REST layers queried at the site point.",
+      "layers": [
+        {
+          "name": "bushfire_prone_land",
+          "layer_url": "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Fire/BFPL/MapServer/0",
+          "out_fields": "*"
+        },
+        {
+          "name": "flood_planning",
+          "layer_url": "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/Hazard/MapServer/1",
+          "out_fields": "*"
+        }
+      ]
+    },
+    "bocsar_crime": {
+      "enabled": true,
+      "description": "BOCSAR LGA recorded-crime statistics via the data.nsw.gov.au CKAN datastore. resource_id = '2 and 10 year trends for 62 offence categories, by LGA'.",
+      "ckan_base": "https://data.nsw.gov.au/data/api/3/action",
+      "package_search_query": "BOCSAR LGA recorded crime",
+      "resource_id": "f69edb1e-a26d-4d5d-a963-593182ce55d8",
+      "lga_field": "Local Government Area",
+      "limit": 1000
+    },
+    "abs_census": {
+      "enabled": true,
+      "description": "ABS Census tables via the ABS Data API (SDMX-JSON). data_key is positional; {region} is replaced by site.abs_region_code.",
+      "base_url": "https://api.data.abs.gov.au",
+      "dataflow": "C21_G01_LGA",
+      "data_key": "..{region}..",
+      "start_period": "2021",
+      "end_period": "2021"
+    },
+    "abs_erp": {
+      "enabled": true,
+      "description": "ABS Estimated Resident Population by LGA (ERP_LGA2023) via the ABS Data API. data_key positional MEASURE.REGION_TYPE.REGION.FREQ; {region} is replaced by site.abs_region_code.",
+      "base_url": "https://api.data.abs.gov.au",
+      "dataflow": "ERP_LGA2023",
+      "data_key": ".LGA2023.{region}.",
+      "start_period": "2022",
+      "end_period": "2023",
+      "output_name": "abs_erp",
+      "source_name": "abs_erp"
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "Header": {
+    "triageNoteFileName": {
+      "type": "string",
+      "note": "Coded filename of the source triage note (e.g. 'NS MDT YU Hsiu Ying'). Segment order convention: [serviceLocation] [pathway] [ptSurname] [ptName]. Used to infer serviceLocation if not explicitly set."
+    },
+    "serviceType": {
+      "type": "enum",
+      "values": ["HITH - Admission Summary", "HITH Phone Admission Summary"],
+      "note": "I/ section — identifies admission modality"
+    },
+    "pathway": {
+      "type": "enum",
+      "values": ["MDT", "PAT", "PAT/MDT", "IVMX", "IV/SC Hydration"]
+    },
+    "serviceLocation": {
+      "type": "array",
+      "items": {
+        "type": "enum",
+        "values": ["OOA", "NS", "RYD", "HKH", "NB"]
+      },
+      "note": "One or more service/site codes. Value from triage note (triage-field-map) takes precedence over admission summary if both present."
+    },
+    "liaisonName": "string",
+    "liaisonDesignation": "string",
+    "liaisonPager": "string",
+    "idCheckCompleted": "boolean",
+    "verbalConsent?": "boolean",
+    "serviceAgreementPending": {
+      "type": "boolean",
+      "note": "True if service agreement is to be signed at first home visit"
+    },
+    "contactServiceSMS": "boolean",
+    "hithAMO": "string",
+    "gp": "string",
+    "gpContact": "string",
+    "gpNotificationStatus": {
+      "type": "enum",
+      "values": ["Sent", "Pending", "N/A"]
+    }
+  },
+  "Subjective": {
+    "patientSummary": {
+      "type": "string",
+      "note": "S/ section — brief narrative of patient, living situation, and reason for referral"
+    }
+  },
+  "Background": {
+    "clinicalBackground": {
+      "type": "string",
+      "note": "B/ section — read in conjunction with triage note"
+    },
+    "dischargeDate": {
+      "type": "date",
+      "required": false,
+      "note": "Date patient was discharged from inpatient ward to home"
+    },
+    "wardLocation": "string",
+    "pmhItems": {
+      "type": "array",
+      "items": "string"
+    },
+    "allergies": "string",
+    "socialHx": "string",
+    "agedCareRegistered": {
+      "type": "boolean",
+      "note": "Whether patient is registered with My Aged Care"
+    }
+  },
+  "Assessment": {
+    "note": "A/ section — per telephone assessment",
+    "primaryContact": "string",
+    "primaryContactRelationship": "string",
+    "noPetsOrWeapons": "boolean",
+    "whsIssues": {
+      "type": "string",
+      "required": false,
+      "note": "Free text if WHS issues identified; null or 'None' otherwise"
+    },
+    "familyHandoverRequested": {
+      "type": "boolean",
+      "note": "Family requested phone call before HITH discharge"
+    },
+    "hvraScore": {
+      "type": "enum",
+      "values": ["Low", "Medium", "High"]
+    },
+    "hvraManagementPlan": "boolean",
+    "vitalSigns": {
+      "type": "string",
+      "note": "e.g. 'Between the flags before discharge'"
+    },
+    "height": {
+      "type": "string",
+      "required": false
+    },
+    "weight": {
+      "type": "string",
+      "required": false
+    },
+    "mobility": "string",
+    "adls": "string",
+    "skinWoundsCheck": {
+      "type": "string",
+      "note": "Status of skin check or instruction for first-visit RN"
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "enum",
+        "values": ["CALD", "Falls", "Delirium", "Precautions", "Other"]
+      }
+    },
+    "alliedHealthGoals": "string"
+  },
+  "Plan": {
+    "note": "R/ section — response and follow-up plan",
+    "firstRNVisitDate": {
+      "type": "date",
+      "required": false
+    },
+    "firstPTVisitDate": {
+      "type": "date",
+      "required": false
+    },
+    "pendingActions": {
+      "type": "array",
+      "items": "string",
+      "note": "Outstanding actions e.g. service agreement, assessments, skin check"
+    },
+    "monitoringPlan": "string",
+    "dischargeSummaryReviewed": "boolean"
+  }
+}

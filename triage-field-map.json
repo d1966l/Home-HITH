@@ -1,0 +1,77 @@
+{
+  "Referrer": {
+    "refName": "string",
+    "refSurname": "string",
+    "refDesignation": "string",
+    "refCallback": "string"
+  },
+  "Patient": {
+    "ptName": "string",
+    "ptSurname": "string",
+    "ptMRN": "string",
+    "ptDOB": "date",
+    "ptSuburb": "string",
+    "ptWardLocation": "string",
+    "treatmentAddress": "string",
+    "lga": {
+      "type": "enum",
+      "values": [
+        "Hornsby",
+        "Ku-ring-gai",
+        "Lane Cove",
+        "Mosman",
+        "North Sydney",
+        "Northern Beaches",
+        "Ryde",
+        "Willoughby"
+      ],
+      "note": "Local Government Area within NSLHD. Used to validate serviceLocation code: NB=Northern Beaches, RYD=Ryde, HKH=Hornsby/Ku-ring-gai, NS=North Sydney/Mosman/Lane Cove/Willoughby, OOA=outside NSLHD."
+    }
+  },
+  "Management": {
+    "managementPlan": {
+      "type": "enum",
+      "values": ["PAT", "MDT", "PAT/MDT"]
+    },
+    "serviceLocation": {
+      "type": "array",
+      "items": {
+        "type": "enum",
+        "values": ["OOA", "NS", "RYD", "HKH", "NB"]
+      },
+      "note": "Authoritative source — takes precedence over Admission_Summary.Header.serviceLocation"
+    },
+    "edd": "date"
+  },
+  "Clinical": {
+    "dxReferral": "string",
+    "clinHistory": "string",
+    "pmHx": "string",
+    "allergies": "string",
+    "amo": "string",
+    "relevantMedHx": "string",
+    "nextBloods": "string",
+    "nextMedReviewMO": "string",
+    "nextMedReviewDate": {
+      "type": "date",
+      "required": false
+    }
+  },
+  "Social": {
+    "socialContext": "string"
+  },
+  "Referral": {
+    "referralStatus": "string",
+    "referralStage": {
+      "type": "enum",
+      "values": ["Stage 1: Triage", "Stage 2: Admitted", "Stage 3: Discharged"],
+      "note": "Stage 1 records may not have an AdmitDate or DischargeDate. AdmitDate > 6 weeks without DischargeDate is anomalous."
+    },
+    "admitDate": "date",
+    "dischargeDate": {
+      "type": "date",
+      "required": false,
+      "note": "Not present for Stage 1: Triage. Required before a record is promoted to hist."
+    }
+  }
+}

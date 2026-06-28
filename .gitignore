@@ -1,27 +1,85 @@
+# =====================================================
 # Python
+# =====================================================
+
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 .Python
 *.egg-info/
-dist/
-build/
 *.egg
 
-# Environments
+# Virtual Environments
 .env
-.venv
+.venv/
 venv/
 env/
 
-# pytest
+# Testing
 .pytest_cache/
 .coverage
 htmlcov/
 
-# IDE
+# =====================================================
+# IDEs
+# =====================================================
+
 .vscode/
 .idea/
 *.swp
 *.swo
+
+# Workspace files
+*.code-workspace
+
+# =====================================================
+# Node / React
+# =====================================================
+
+node_modules/
+*node_modules*/
+# Node dependency copies
+*node_modules*/
+*node_modules - Copy*/
+
+# React build artifacts
+dist/
+build/
+coverage/
+.vite/
+
+dist/
+build/
+coverage/
+.vite/
+
+# =====================================================
+# Nested Repositories
+# =====================================================
+
+bootstrap/
+clinical/
+management/
+
+# =====================================================
+# ETL Generated Output
+# =====================================================
+
+australia-geodata-etl/outputs/
+
+# =====================================================
+# Generated Data
+# =====================================================
+
+*.geojson.tmp
+*.kml.tmp
+*.kmz.tmp
+
+# =====================================================
+# OS Files
+# =====================================================
+
+Thumbs.db
+Desktop.ini
+.DS_Store

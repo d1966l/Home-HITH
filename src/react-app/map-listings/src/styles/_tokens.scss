@@ -1,0 +1,51 @@
+// ── Tokens ──────────────────────────────────────────────────────────────────
+$bg-deep:      #07071a;
+$bg-panel:     #0d0d2b;
+$bg-card:      #11112e;
+$border:       #1e1e4a;
+
+$neon-green:   #00ffb3;
+$neon-purple:  #a880ff;
+$neon-yellow:  #f0c040;
+$neon-pink:    #ff4fa3;
+$neon-blue:    #38cfff;
+
+$text-primary: #e8e8ff;
+$text-muted:   #5a5a8a;
+$text-code:    $neon-green;
+
+$radius-card:  10px;
+$radius-chip:  20px;
+$font-mono:    'Courier New', Courier, monospace;
+$font-ui:      'Segoe UI', system-ui, sans-serif;
+
+// ── Mixins ───────────────────────────────────────────────────────────────────
+@mixin glass($alpha: 0.12) {
+  background: rgba($bg-panel, $alpha + 0.55);
+  backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid rgba($neon-purple, 0.18);
+}
+
+@mixin neon-glow($color, $spread: 6px) {
+  box-shadow: 0 0 $spread rgba($color, 0.55), 0 0 ($spread * 3) rgba($color, 0.2);
+}
+
+@mixin scanlines {
+  &::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px
+    );
+    z-index: 0;
+  }
+}
+
+// ── Reset ────────────────────────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
