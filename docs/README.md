@@ -7,6 +7,16 @@ $Gallery = "docs\screenshots\README.md"
 
 ![Architecture](01-architecture-overview.png)
 
+## Solution Architecture
+
+![Architecture](docs/screenshots/01-architecture-overview.png)
+
+For detailed architecture documentation see:
+
+- docs/architecture/solution-overview.md
+- docs/deployment/deployment-guide.md
+- docs/deployment/environment-variables.md
+
 ## Planned Screenshots
 
 | Screenshot | Status |
